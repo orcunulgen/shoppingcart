@@ -1,11 +1,14 @@
 package com.orcun.shoppingcart;
 
+
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.util.Optional;
 
-public class Main {
+public class ShoppingCartTest {
 
-    public static void main(String[] args) {
-
+    private ShoppingCart getSeedData() {
         Category cat1 = new Category("cat1");
         Category cat2 = new Category("cat2");
         Category cat3 = new Category("cat3");
@@ -39,15 +42,43 @@ public class Main {
 
         DeliveryCostCalculator calculator = new DeliveryCostCalculator(2.0, 2.0);
         cart.setDeliveryCostCalculator(calculator);
-
-        cart.print();
-        System.out.println("Total Amount : " + cart.getTotalAmount());
-        System.out.println("Campaign Discount : " + cart.getCampaignDiscount());
-        System.out.println("Coupon Discount : " + cart.getCouponDiscount());
-        System.out.println("Delivery Cost : " + cart.getDeliveryCost());
-        System.out.println("Total Amount After Discount : " + cart.getTotalAmountAfterDiscount());
-        System.out.println("Sub-Total : " + cart.getSubTotal());
-
-
+        return cart;
     }
+
+    @Test
+    public void testTotalAmount() {
+        ShoppingCart cart = getSeedData();
+        Assert.assertEquals(cart.getTotalAmount(), Double.valueOf(110.0));
+    }
+
+    @Test
+    public void testCampaignDiscountAmount() {
+        ShoppingCart cart = getSeedData();
+        Assert.assertEquals(cart.getCampaignDiscount(), Double.valueOf(22.0));
+    }
+
+    @Test
+    public void testCouponDiscountAmount() {
+        ShoppingCart cart = getSeedData();
+        Assert.assertEquals(String.format("%.2f", cart.getCouponDiscount()), "22.60");
+    }
+
+    @Test
+    public void testDeliveryCost() {
+        ShoppingCart cart = getSeedData();
+        Assert.assertEquals(cart.getDeliveryCost(), Double.valueOf(14.99));
+    }
+
+    @Test
+    public void testTotalAmountAfterDiscount() {
+        ShoppingCart cart = getSeedData();
+        Assert.assertEquals(cart.getTotalAmountAfterDiscount(), Double.valueOf(65.4));
+    }
+
+    @Test
+    public void testSubTotal() {
+        ShoppingCart cart = getSeedData();
+        Assert.assertEquals(cart.getSubTotal(), Double.valueOf(80.39));
+    }
+
 }

@@ -1,5 +1,8 @@
 package com.orcun.shoppingcart;
 
+import org.apache.commons.math3.util.Precision;
+
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +78,7 @@ public class ShoppingCart {
             if (coupon.getDiscountType().equals(DiscountType.AMOUNT)) {
                 return coupon.getDiscountAmount();
             } else if (coupon.getDiscountType().equals(DiscountType.RATE)) {
-                return amount * coupon.getDiscountAmount() / 100;
+                return Precision.round(amount * coupon.getDiscountAmount() / 100, 2);
             }
         }
         return 0.0;
@@ -87,7 +90,7 @@ public class ShoppingCart {
             if (campaign.getDiscountType().equals(DiscountType.AMOUNT)) {
                 return campaign.getDiscountAmount();
             } else if (campaign.getDiscountType().equals(DiscountType.RATE)) {
-                return amount * campaign.getDiscountAmount() / 100;
+                return Precision.round(amount * campaign.getDiscountAmount() / 100, 2);
             }
         }
         return 0.0;
@@ -111,7 +114,6 @@ public class ShoppingCart {
                 .map(discount -> (Campaign) discount)
                 .collect(Collectors.toList());
     }
-
 
     public Double getTotalAmount() {
         return getCartItemList().stream()
@@ -144,7 +146,6 @@ public class ShoppingCart {
         return cartItemList;
     }
 
-
     public List<Discount> getDiscountList() {
         return discountList;
     }
@@ -164,7 +165,6 @@ public class ShoppingCart {
     public void setDeliveryCostCalculator(DeliveryCostCalculator deliveryCostCalculator) {
         this.deliveryCostCalculator = deliveryCostCalculator;
     }
-
 
     public void print() {
         Map<Tuple, List<CartItem>> itemsGroupedByCategoryMap = getCartItemList().stream()
